@@ -1,10 +1,10 @@
 package service
 
 import (
-	"github.com/slycreator/shop-for-me/controllers/dto"
-	"github.com/slycreator/shop-for-me/controllers/entity"
-	"github.com/slycreator/shop-for-me/controllers/repository"
 	"github.com/mashingan/smapping"
+	"github.com/slycreator/shop-for-me/dto"
+	"github.com/slycreator/shop-for-me/entity"
+	"github.com/slycreator/shop-for-me/repository"
 	"golang.org/x/crypto/bcrypt"
 	"log"
 )

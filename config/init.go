@@ -25,7 +25,7 @@ func OpenDatabaseConnection() *gorm.DB {
 		if err != nil {
 			panic("Failed to create a database connection")
 		}
-		db.AutoMigrate(&entity.User{},&entity.AccountBalance{})
+		db.AutoMigrate(&entity.User{})
 		return db
 }
 
