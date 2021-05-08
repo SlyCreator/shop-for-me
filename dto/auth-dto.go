@@ -11,10 +11,14 @@ type RegisterDTO struct {
 	Citizenship			string		`json:"citizenship" form:"citizenship"`
 }
 
-//RegisterDTO is use to to receive data on registration
+//LoginDTO is use to to receive data on registration
 type LoginDTO struct {
-	Email		string		`json:"email" form:email binding:required`
-	Password	string		`json:"password" form:password binding:required`
+	Email				string		`json:"email" form:"email" binding:"required,email" `
+	Password			string		`json:"password" form:"password" binding:"required"`
+}
+
+type PasswordResetDTO struct {
+	Email				string		`json:"email" form:"email" binding:"required,email" `
 }
 
 //RegisterDTO is use to to receive data on registration

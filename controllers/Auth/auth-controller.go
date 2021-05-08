@@ -13,8 +13,9 @@ import (
 type AuthController interface {
 	Login(ctx *gin.Context)
 	Register(ctx *gin.Context)
-	VerifyNumber(ctx *gin.Context)
-	ForgetPassword(ctx *gin.Context)
+	VerifyToken(ctx *gin.Context)
+	UpdatePassword(ctx *gin.Context)
+	PasswordReset(ctx *gin.Context)
 }
 type authController struct {
 	authService service.AuthService
@@ -38,23 +39,25 @@ func (c *authController) Register(ctx *gin.Context) {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
 		return
 	}
+	//
+	//if !c.authService.IsPhoneInDB(registerDTO.Phone) {
+	//	response := helper.BuildErrorResponse("Failed to process request", "Phone number has been used by another user", helper.EmptyObj{})
+	//	ctx.JSON(http.StatusConflict, response)
+	//	return
+	//}
 
-	if !c.authService.IsDuplicatePhone(registerDTO.Phone) {
-		response := helper.BuildErrorResponse("Failed to process request", "Phone number has been used by another user", helper.EmptyObj{})
-		ctx.JSON(http.StatusConflict, response)
-		return
-	}
-
-	if !c.authService.IsDuplicateEmail(registerDTO.Email) {
+	if  c.authService.IsEmailInDB(registerDTO.Email) {
 		response := helper.BuildErrorResponse("Failed to process request", "Email has been used by another user", helper.EmptyObj{})
 		ctx.JSON(http.StatusConflict, response)
-		return
-	}
-	createdUser := c.authService.CreateUser(registerDTO)
+
+	}else {
+		createdUser := c.authService.CreateUser(registerDTO)
 		token := c.jwtService.GenerateToken(strconv.FormatUint(createdUser.ID, 10))
 		createdUser.Token = token
 		response := helper.BuildResponse(true, "OK!", createdUser)
 		ctx.JSON(http.StatusCreated, response)
+	}
+
 
 }
 
@@ -66,6 +69,7 @@ func (c authController) Login(ctx *gin.Context)  {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest,response)
 		return
 	}
+
 
 	authResult := c.authService.VerifyCredential(loginDTO.Email,loginDTO.Password)
 
@@ -81,11 +85,29 @@ func (c authController) Login(ctx *gin.Context)  {
 	ctx.AbortWithStatusJSON(http.StatusUnauthorized,response)
 }
 
-func (c authController) ForgetPassword(ctx *gin.Context)  {
-	return
+func (c *authController) PasswordReset(ctx *gin.Context)  {
+	var passwordResetDTO  dto.PasswordResetDTO
+	errDTO := ctx.ShouldBind(&passwordResetDTO)
+	if errDTO != nil {
+		response := helper.BuildErrorResponse("Failed to process request", errDTO.Error(), helper.EmptyObj{})
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
+		return
+	}
+
+	if !c.authService.IsEmailInDB(passwordResetDTO.Email) {
+		response := helper.BuildErrorResponse("Failed to process request", "Email does'not eistr", helper.EmptyObj{})
+		ctx.JSON(http.StatusConflict, response)
+
+	}else {
+		createdToken := c.authService.CreateResetCode(passwordResetDTO)
+		token := createdToken.Token
+		response := helper.BuildResponse(true, "OK!", token)
+		ctx.JSON(http.StatusCreated, response)
+	}
+
 }
 
-func (c authController) VerifyNumber(ctx *gin.Context)  {
+func (c authController) VerifyToken(ctx *gin.Context)  {
 	var updatePasswordDTO dto.UpdatePasswordDTO
 	errDTO := ctx.ShouldBind(&updatePasswordDTO)
 	if errDTO != nil {
@@ -94,3 +116,8 @@ func (c authController) VerifyNumber(ctx *gin.Context)  {
 		return
 	}
 }
+
+func (c authController) UpdatePassword(ctx *gin.Context)  {
+	return
+}
+
