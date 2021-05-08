@@ -15,7 +15,6 @@ type User struct {
 	LastName			string		`grom:"type:varchar(255)" json:"last_name"`
 	DataOFBirth			string		`grom:"type:varchar(255)" json:"data_of_birth"`
 	BVN					string		`grom:"uniqueIndex;type:varchar(255); json:"bvn"`
-	CountryOfResidence  string		`grom:"type:varchar(255)" json:"country_of_residence"`
 	Citizenship			string		`grom:"type:varchar(255)" json:"citizenship"`
 	IsVerifiedKYC		bool		`grom:"type:varchar(255)" json:"is_verified_kyc"`
 
