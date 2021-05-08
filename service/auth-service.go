@@ -11,9 +11,10 @@ import (
 
 type AuthService interface {
 	CreateUser(user dto.RegisterDTO) entity.User
-	IsDuplicatePhone(phone string) bool
-	IsDuplicateEmail(email string) bool
+	IsPhoneInDB(email string) bool
+	IsEmailInDB(email string) bool
 	VerifyCredential(email string,password string) interface{}
+	CreateResetCode(passwordReset dto.PasswordResetDTO) entity.PasswordReset
 }
 
 type authService struct {
@@ -36,14 +37,17 @@ func (a *authService) CreateUser(user dto.RegisterDTO) entity.User {
 	return res
 }
 
-func (a *authService) IsDuplicatePhone(phone string) bool {
-	res := a.authRepository.IsDuplicatePhone(phone)
-	return !(res.Error == nil)
+func (a *authService) IsPhoneInDB(phone string) bool {
+	res := a.authRepository.FindPhone(phone)
+	log.Println(!(res.Error != nil))
+	return !(res.Error != nil)//returns true when res is found
+
+
 }
 
-func (a *authService) IsDuplicateEmail(email string) bool {
-	res := a.authRepository.IsDuplicateEmail(email)
-	return !(res.Error == nil)
+func (a *authService) IsEmailInDB(email string) bool {
+	res := a.authRepository.FindEmail(email)
+	return res.Error == nil //returns true when res is found
 }
 
 func (a *authService) VerifyCredential(email string, password string) interface{} {
@@ -56,6 +60,17 @@ func (a *authService) VerifyCredential(email string, password string) interface{
 		return false
 	}
 	return false
+}
+
+func (a authService) CreateResetCode(passwordReset dto.PasswordResetDTO) entity.PasswordReset{
+	tokenToCreate := entity.PasswordReset{}
+	//read about smapping and how it work
+	err := smapping.FillStruct(&tokenToCreate,smapping.MapFields(&passwordReset))
+	if err != nil {
+		log.Fatalf("Failed to map")
+	}
+	res := a.authRepository.CreateResetCode(tokenToCreate)
+	return res
 }
 
 func (a authService) UpdatePassword()  {

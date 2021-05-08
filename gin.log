@@ -1,0 +1,31 @@
+[GIN-debug] [WARNING] Creating an Engine instance with the Logger and Recovery middleware already attached.
+
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] POST   /v1/api/register          --> github.com/slycreator/shop-for-me/controllers/Auth.AuthController.Register-fm (4 handlers)
+[GIN-debug] POST   /v1/api/login             --> github.com/slycreator/shop-for-me/controllers/Auth.AuthController.Login-fm (4 handlers)
+[GIN-debug] POST   /v1/api/password/email    --> github.com/slycreator/shop-for-me/controllers/Auth.AuthController.PasswordReset-fm (4 handlers)
+[GIN-debug] POST   /v1/api/password/check_token --> github.com/slycreator/shop-for-me/controllers/Auth.AuthController.VerifyToken-fm (4 handlers)
+[GIN-debug] POST   /v1/api/password/change_password --> github.com/slycreator/shop-for-me/controllers/Auth.AuthController.UpdatePassword-fm (4 handlers)
+[GIN-debug] POST   /v1/api/logout            --> github.com/slycreator/shop-for-me/controllers/Auth.AuthController.Register-fm (4 handlers)
+[GIN-debug] POST   /v1/api/update_password   --> github.com/slycreator/shop-for-me/controllers/Auth.AuthController.Register-fm (4 handlers)
+[GIN-debug] GET    /v1/api/profile/show      --> github.com/slycreator/shop-for-me/controllers/Auth.AuthController.Register-fm (4 handlers)
+[GIN-debug] POST   /v1/api/profile/update    --> github.com/slycreator/shop-for-me/controllers/Auth.AuthController.Register-fm (4 handlers)
+[GIN-debug] POST   /v1/api/profile/report    --> github.com/slycreator/shop-for-me/controllers/Auth.AuthController.Register-fm (4 handlers)
+[GIN-debug] POST   /v1/api/profile/item_sent --> github.com/slycreator/shop-for-me/controllers/Auth.AuthController.Register-fm (4 handlers)
+[GIN-debug] GET    /v1/api/sender/send       --> github.com/slycreator/shop-for-me/controllers/Auth.AuthController.Register-fm (4 handlers)
+[GIN-debug] POST   /v1/api/sender/send_later --> github.com/slycreator/shop-for-me/controllers/Auth.AuthController.Register-fm (4 handlers)
+[GIN-debug] POST   /v1/api/sender/draft_shopping_list --> github.com/slycreator/shop-for-me/controllers/Auth.AuthController.Register-fm (4 handlers)
+[GIN-debug] POST   /v1/api/sender/offer/create --> github.com/slycreator/shop-for-me/controllers/Auth.AuthController.Register-fm (4 handlers)
+[GIN-debug] POST   /v1/api/sender/offer/{offer}/ --> github.com/slycreator/shop-for-me/controllers/Auth.AuthController.Register-fm (4 handlers)
+[GIN-debug] POST   /v1/api/sender/offer/{offer}/accept --> github.com/slycreator/shop-for-me/controllers/Auth.AuthController.Register-fm (4 handlers)
+[GIN-debug] POST   /v1/api/sender/offer/{offer}/decline --> github.com/slycreator/shop-for-me/controllers/Auth.AuthController.Register-fm (4 handlers)
+[GIN-debug] GET    /v1/api/sender/shopping_lists/{shopping_list}/delete --> github.com/slycreator/shop-for-me/controllers/Auth.AuthController.Register-fm (4 handlers)
+[GIN-debug] POST   /v1/api/sender/shopping_lists/{shopping_list}/accept_grocery_as_deliver --> github.com/slycreator/shop-for-me/controllers/Auth.AuthController.Register-fm (4 handlers)
+[GIN-debug] POST   /v1/api/sender/shopping_lists/{shopping_list}/reject_grocery_as_deliver --> github.com/slycreator/shop-for-me/controllers/Auth.AuthController.Register-fm (4 handlers)
+[GIN-debug] POST   /v1/api/sender/shopping_lists/{shopping_list}/rate_shopper --> github.com/slycreator/shop-for-me/controllers/Auth.AuthController.Register-fm (4 handlers)
+[GIN-debug] GET    /v1/api/sender/track/     --> github.com/slycreator/shop-for-me/controllers/Auth.AuthController.Register-fm (4 handlers)
+[GIN-debug] POST   /v1/api/sender/track/{track} --> github.com/slycreator/shop-for-me/controllers/Auth.AuthController.Register-fm (4 handlers)
+[GIN-debug] Listening and serving HTTP on :2029
