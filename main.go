@@ -70,19 +70,6 @@ func main() {
 				senderRoute.POST("/send_later",authController.Register)
 				senderRoute.POST("/draft_shopping_list",authController.Register)
 
-				shoppingListroute := senderRoute.Group("/shopping_lists/{shopping_list}")
-				{
-					shoppingListroute.GET("/delete",authController.Register)
-					shoppingListroute.POST("/accept_grocery_as_deliver",authController.Register)
-					shoppingListroute.POST("/reject_grocery_as_deliver",authController.Register)
-					shoppingListroute.POST("/rate_shopper",authController.Register)
-				}
-
-				trackRoute := senderRoute.Group("/track}")
-				{
-					trackRoute.GET("/",authController.Register)
-					trackRoute.POST("/{track}",authController.Register)
-				}
 
 				offerRoute := senderRoute.Group("/offer")
 				{
@@ -94,9 +81,26 @@ func main() {
 						SingleOfferRoute.POST("/decline", authController.Register)
 					}
 				}
+
+				shoppingListroute := senderRoute.Group("/shopping_lists/{shopping_list}")
+				{
+					shoppingListroute.GET("/delete",authController.Register)
+					shoppingListroute.POST("/accept_grocery_as_deliver",authController.Register)
+					shoppingListroute.POST("/reject_grocery_as_deliver",authController.Register)
+					shoppingListroute.POST("/rate_shopper",authController.Register)
+				}
+
+				trackRoute := senderRoute.Group("/track")
+				{
+					trackRoute.GET("/",authController.Register)
+					trackRoute.POST("/{track}",authController.Register)
+				}
+
 			}
 		}
 
 
 	r.Run(":2021")
 }
+
+//nodemon --exec go run main.go --signal SIGTERM
