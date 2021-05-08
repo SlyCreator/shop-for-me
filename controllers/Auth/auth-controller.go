@@ -67,7 +67,7 @@ func (c authController) Login(ctx *gin.Context)  {
 		return
 	}
 
-	authResult := c.authService.VerifyCredential(loginDTO.Phone,loginDTO.Password)
+	authResult := c.authService.VerifyCredential(loginDTO.Email,loginDTO.Password)
 
 	if v,ok := authResult.(entity.User); ok {
 		generatedToken := c.jwtService.GenerateToken(strconv.FormatUint(v.ID,10))

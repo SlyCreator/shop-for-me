@@ -13,7 +13,7 @@ type AuthService interface {
 	CreateUser(user dto.RegisterDTO) entity.User
 	IsDuplicatePhone(phone string) bool
 	IsDuplicateEmail(email string) bool
-	VerifyCredential(phone string,password string) interface{}
+	VerifyCredential(email string,password string) interface{}
 }
 
 type authService struct {
@@ -46,11 +46,11 @@ func (a *authService) IsDuplicateEmail(email string) bool {
 	return !(res.Error == nil)
 }
 
-func (a *authService) VerifyCredential(phone string, password string) interface{} {
-	res := a.authRepository.VerifyCredential(phone)
+func (a *authService) VerifyCredential(email string, password string) interface{} {
+	res := a.authRepository.VerifyCredential(email)
 	if v, ok := res.(entity.User); ok {
 		comparedPassword := comparePassword(v.Password, []byte(password))
-		if v.Phone == phone && comparedPassword {
+		if v.Email == email && comparedPassword {
 			return res
 		}
 		return false

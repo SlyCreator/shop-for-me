@@ -49,9 +49,9 @@ func (db *authConnection) IsDuplicateEmail(email string) (tx *gorm.DB){
 	return db.connection.Where("email = ?",email).Take(&user)
 }
 
-func (db authConnection) VerifyCredential(phone string) interface{} {
+func (db authConnection) VerifyCredential(email string) interface{} {
 	var user entity.User
-	res := db.connection.Where("phone = ?",phone).Take(&user)
+	res := db.connection.Where("email = ?",email).Take(&user)
 	if res.Error != nil {
 		return nil
 	}
