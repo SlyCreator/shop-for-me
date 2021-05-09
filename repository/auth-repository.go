@@ -1,13 +1,11 @@
 package repository
 
 import (
-	"math/rand"
 	//"crypto/rand"
 	"github.com/slycreator/shop-for-me/entity"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 	"log"
-
 )
 
 type AuthRepository interface {
@@ -16,6 +14,7 @@ type AuthRepository interface {
 	FindEmail(phone string) (tx *gorm.DB)
 	VerifyCredential(phone string) interface{}
 	CreateResetCode(passwordReset entity.PasswordReset) entity.PasswordReset
+	VerifyResetToken(email string,token string) (tx *gorm.DB)
 	UpdatePassword(user entity.User) entity.User
 }
 
@@ -50,13 +49,14 @@ func (db *authConnection) FindPhone(phone string) (tx *gorm.DB){
 
 func (db *authConnection) FindEmail(email string) (tx *gorm.DB){
 	var user entity.User
-	return db.connection.Where(&user.Email,email).Take(&user)
+	return db.connection.Where("email = ?",email).Take(&user)
+	//return db.connection.Where(&user.Email,email).Take(&user)
 }
 
 func (db authConnection) VerifyCredential(email string) interface{} {
 	var user entity.User
-	//res := db.connection.Where("email = ?",email).Take(&user)
-	res := db.connection.Where(&user.Email,email).Find(&user)
+	res := db.connection.Where("email = ?",email).Take(&user)
+	//res := db.connection.Where(&user.Email,email).Find(&user) //this return error when login
 	if res.Error != nil {
 		return nil
 	}
@@ -64,11 +64,18 @@ func (db authConnection) VerifyCredential(email string) interface{} {
 }
 
 func (db *authConnection) CreateResetCode(passwordReset entity.PasswordReset) entity.PasswordReset{
-	min := 10
-	max := 30
-	passwordReset.Token = string(rand.Intn(max-min+1) + min)
+	//min := 10
+	//max := 30
+	//passwordReset.Token = string(rand.Intn(max-min+1) + min)
+
+	passwordReset.Token = "2345"
 	db.connection.Save(&passwordReset)
 	return passwordReset
+}
+
+func (db authConnection) VerifyResetToken(email string,token string) (tx *gorm.DB) {
+	var user entity.PasswordReset
+	return db.connection.Where("email = ? AND token = ? ",email,token).Take(&user)
 }
 
 //This is where the password hashing happens

@@ -7,7 +7,7 @@ import (
 
 type User struct {
 	ID 					uint64		`gorm:"primary_key:auto_increment" json:"id"`
-	Phone				string		`gorm:"type:varchar(255)" json:"phone"`
+	Phone				string		`gorm:"uniqueIndex;type:varchar(255)" json:"phone"`
 	Password			string		`gorm:"->;<-;not null" json:"password"`
 	Email				string		`gorm:"uniqueIndex;type:varchar(255)" json:"email"`
 	IsVerifiedEmail     bool        `grom:"type:varchar(255)" json:"is_verified_email"`
