@@ -57,9 +57,14 @@ func main() {
 	{
 		guestRoute.POST("/register", authController.Register)
 		guestRoute.POST("/login", authController.Login)
-		guestRoute.POST("/password/email", authController.PasswordReset)
-		guestRoute.POST("/password/check_token", authController.VerifyToken)
-		guestRoute.POST("/password/change_password", authController.UpdatePassword)
+
+		passwordResetRoute := guestRoute.Group("/password")
+		{
+			passwordResetRoute.POST("/email", authController.PasswordReset)
+			passwordResetRoute.POST("/check_token", authController.VerifyToken)
+			passwordResetRoute.POST("/change_password", authController.UpdatePassword)
+		}
+
 	}
 		//Add a middleware to this route
 		authRoute := router.Group("/")
