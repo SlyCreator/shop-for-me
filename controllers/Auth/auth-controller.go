@@ -39,12 +39,12 @@ func (c *authController) Register(ctx *gin.Context) {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
 		return
 	}
-	//
-	//if !c.authService.IsPhoneInDB(registerDTO.Phone) {
-	//	response := helper.BuildErrorResponse("Failed to process request", "Phone number has been used by another user", helper.EmptyObj{})
-	//	ctx.JSON(http.StatusConflict, response)
-	//	return
-	//}
+
+	if c.authService.IsPhoneInDB(registerDTO.Phone) {
+		response := helper.BuildErrorResponse("Failed to process request", "Phone number has been used by another user", helper.EmptyObj{})
+		ctx.JSON(http.StatusConflict, response)
+		return
+	}
 
 	if  c.authService.IsEmailInDB(registerDTO.Email) {
 		response := helper.BuildErrorResponse("Failed to process request", "Email has been used by another user", helper.EmptyObj{})
@@ -95,7 +95,7 @@ func (c *authController) PasswordReset(ctx *gin.Context)  {
 	}
 
 	if !c.authService.IsEmailInDB(passwordResetDTO.Email) {
-		response := helper.BuildErrorResponse("Failed to process request", "Email does'not eistr", helper.EmptyObj{})
+		response := helper.BuildErrorResponse("Failed to process request", "Email does not exist", helper.EmptyObj{})
 		ctx.JSON(http.StatusConflict, response)
 
 	}else {
@@ -108,12 +108,17 @@ func (c *authController) PasswordReset(ctx *gin.Context)  {
 }
 
 func (c authController) VerifyToken(ctx *gin.Context)  {
-	var updatePasswordDTO dto.UpdatePasswordDTO
-	errDTO := ctx.ShouldBind(&updatePasswordDTO)
+	var verifyResetTokenDTO dto.VerifyResetTokenDTO
+	errDTO := ctx.ShouldBind(&verifyResetTokenDTO)
 	if errDTO != nil {
 		response := helper.BuildErrorResponse("Failed to process request",errDTO.Error(),helper.EmptyObj{})
 		ctx.AbortWithStatusJSON(http.StatusBadRequest,response)
 		return
+	}
+
+	if !c.authService.VerifyResetToken(verifyResetTokenDTO.Email,verifyResetTokenDTO.Token) {
+		response := helper.BuildErrorResponse("Token is incorrect","Invalid token",helper.EmptyObj{})
+		ctx.AbortWithStatusJSON(http.StatusUnauthorized,response)
 	}
 }
 

@@ -21,6 +21,11 @@ type PasswordResetDTO struct {
 	Email				string		`json:"email" form:"email" binding:"required,email" `
 }
 
+type VerifyResetTokenDTO struct {
+	Email				string		`json:"email" form:"email" binding:"required,email" `
+	Token				string		`json:"token" form:"token" binding:"required,token" `
+}
+
 //RegisterDTO is use to to receive data on registration
 type UpdatePasswordDTO struct {
 	OldPassword	string		`json:"password" form:password binding:required`

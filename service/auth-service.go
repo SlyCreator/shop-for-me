@@ -15,6 +15,7 @@ type AuthService interface {
 	IsEmailInDB(email string) bool
 	VerifyCredential(email string,password string) interface{}
 	CreateResetCode(passwordReset dto.PasswordResetDTO) entity.PasswordReset
+	VerifyResetToken(email string,token string) bool
 }
 
 type authService struct {
@@ -39,7 +40,6 @@ func (a *authService) CreateUser(user dto.RegisterDTO) entity.User {
 
 func (a *authService) IsPhoneInDB(phone string) bool {
 	res := a.authRepository.FindPhone(phone)
-	log.Println(!(res.Error != nil))
 	return !(res.Error != nil)//returns true when res is found
 
 
@@ -47,7 +47,7 @@ func (a *authService) IsPhoneInDB(phone string) bool {
 
 func (a *authService) IsEmailInDB(email string) bool {
 	res := a.authRepository.FindEmail(email)
-	return res.Error == nil //returns true when res is found
+	return !(res.Error != nil) //returns true when email is not found and negate it to false
 }
 
 func (a *authService) VerifyCredential(email string, password string) interface{} {
@@ -71,6 +71,12 @@ func (a authService) CreateResetCode(passwordReset dto.PasswordResetDTO) entity.
 	}
 	res := a.authRepository.CreateResetCode(tokenToCreate)
 	return res
+}
+
+func (a *authService) VerifyResetToken(email string,token string) bool {
+	res := a.authRepository.VerifyResetToken(email,token)
+	return !(res.Error != nil)
+
 }
 
 func (a authService) UpdatePassword()  {
