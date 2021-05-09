@@ -75,7 +75,7 @@ func (a authService) CreateResetCode(passwordReset dto.PasswordResetDTO) entity.
 
 func (a *authService) VerifyResetToken(email string,token string) bool {
 	res := a.authRepository.VerifyResetToken(email,token)
-	return !(res.Error != nil)
+	return res.Error == nil
 
 }
 

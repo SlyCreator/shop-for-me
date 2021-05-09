@@ -120,9 +120,17 @@ func (c authController) VerifyToken(ctx *gin.Context)  {
 		response := helper.BuildErrorResponse("Token is incorrect","Invalid token",helper.EmptyObj{})
 		ctx.AbortWithStatusJSON(http.StatusUnauthorized,response)
 	}
+	response := helper.BuildResponse(true, "OK!", "Confirmed pls reset update your password")
+	ctx.JSON(http.StatusCreated, response)
 }
 
 func (c authController) UpdatePassword(ctx *gin.Context)  {
-	return
+	var verifyResetTokenDTO dto.VerifyResetTokenDTO
+	errDTO := ctx.ShouldBind(&verifyResetTokenDTO)
+	if errDTO != nil {
+		response := helper.BuildErrorResponse("Failed to process request",errDTO.Error(),helper.EmptyObj{})
+		ctx.AbortWithStatusJSON(http.StatusBadRequest,response)
+		return
+	}
 }
 
